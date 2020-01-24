@@ -10,7 +10,7 @@ const mainReducer = (state = initialState, action) => {
       return state;
     case "REMOVE_ITEM":
       return state;
-    case "FETCH_USERS":
+    case "SET_USERS":
       return { ...state, fetch: fetchReducer(state.fetch, action) };
     default:
       return state;
@@ -20,7 +20,7 @@ const mainReducer = (state = initialState, action) => {
 // Reducer composition:
 function fetchReducer(state, action) {
   switch (action.type) {
-    case "FETCH_USERS":
+    case "SET_USERS":
       return updateObject(state, {
         isFetching: false,
         items: [...action.payload]

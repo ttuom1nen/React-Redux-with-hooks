@@ -33,7 +33,7 @@ export const fetchUsers = () => {
       .then(response => response.json())
       .then(json =>
         dispatch({
-          type: "FETCH_USERS",
+          type: "SET_USERS",
           payload: json
         })
       );
