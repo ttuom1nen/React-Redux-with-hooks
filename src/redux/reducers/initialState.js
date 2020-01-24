@@ -1,9 +1,9 @@
 export const initialState = {
   fetch: {
     isFetching: true,
-    didInvalidate: false
+    didInvalidate: false,
+    items: []
   },
-  list: [],
   counter: 0,
   dashboard: [null]
 };

@@ -12,7 +12,9 @@ const listStyle = {
 
 const List = () => {
   const dispatch = useDispatch();
-  const items = useSelector(state => state.list);
+  const { isFetching, didInvalidate, items } = useSelector(
+    state => state.fetch
+  );
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -21,33 +23,39 @@ const List = () => {
 
   return (
     <div style={{ ...listStyle }}>
-      <div>
-        <button
-          onClick={() =>
-            dispatch({
-              type: "ADD_ITEM",
-              payload: {}
-            })
-          }
-        >
-          Add Item
-        </button>
-        <button
-          onClick={() =>
-            dispatch({
-              type: "REMOVE_ITEM",
-              payload: {}
-            })
-          }
-        >
-          Remove Item
-        </button>
-      </div>
-      <div>
-        {items.map(item => (
-          <ListItem key={item.id} id={item.id} name={item.name} />
-        ))}
-      </div>
+      {!isFetching ? (
+        <div>
+          <div>
+            <button
+              onClick={() =>
+                dispatch({
+                  type: "ADD_ITEM",
+                  payload: {}
+                })
+              }
+            >
+              Add Item
+            </button>
+            <button
+              onClick={() =>
+                dispatch({
+                  type: "REMOVE_ITEM",
+                  payload: {}
+                })
+              }
+            >
+              Remove Item
+            </button>
+          </div>
+          <div>
+            {items.map(item => (
+              <ListItem key={item.id} id={item.id} name={item.name} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <b>Loading data...</b>
+      )}
     </div>
   );
 };
