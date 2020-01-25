@@ -6,24 +6,40 @@ const mainReducer = (state = initialState, action) => {
       return { ...state, counter: state.counter + 1 };
     case "DECREMENT":
       return { ...state, counter: state.counter - 1 };
-    case "ADD_ITEM":
-      return state;
-    case "REMOVE_ITEM":
-      return state;
     case "SET_USERS":
-      return { ...state, fetch: fetchReducer(state.fetch, action) };
+      return { ...state, fetch: userItemsReducers(state.fetch, action) };
+    case "SET_USERS_ERROR":
+      return { ...state, fetch: userItemsReducers(state.fetch, action) };
+    case "REMOVE_ITEM":
+      return { ...state, fetch: userItemsReducers(state.fetch, action) };
+    case "TOGGLE_EDIT":
+      return { ...state, fetch: userItemsReducers(state.fetch, action) };
     default:
       return state;
   }
 };
 
-// Reducer composition:
-function fetchReducer(state, action) {
+// Reducer composition
+function userItemsReducers(state, action) {
   switch (action.type) {
     case "SET_USERS":
       return updateObject(state, {
         isFetching: false,
         items: [...action.payload]
+      });
+    case "SET_USERS_ERROR":
+      return updateObject(state, {
+        didInvalidate: true
+      });
+    case "REMOVE_ITEM":
+      return updateObject(state, {
+        items: removeFromArray(state.items, action.payload)
+      });
+    case "TOGGLE_EDIT":
+      return updateObject(state, {
+        items: updateItemInArray(state.items, action.payload, function(item) {
+          return updateObject(item, { editing: !item.editing });
+        })
       });
     default:
       return state;
@@ -35,6 +51,16 @@ function updateObject(oldObject, newValues) {
   // Encapsulate the idea of passing a new object as the first parameter
   // to Object.assign to ensure we correctly copy data instead of mutating
   return Object.assign({}, oldObject, newValues);
+}
+
+function removeFromArray(array, itemId) {
+  const tempArr = array.slice();
+  tempArr.forEach((item, index) => {
+    if (item.id === itemId) {
+      tempArr.splice(index, 1);
+    }
+  });
+  return tempArr;
 }
 
 function updateItemInArray(array, itemId, updateItemCallback) {

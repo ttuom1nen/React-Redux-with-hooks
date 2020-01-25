@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { removeItem, toggleEdit } from "../redux/actions/actionCreators";
 
 const listItemStyle = {
   border: "1px solid silver",
@@ -9,10 +11,32 @@ const listItemStyle = {
   boxSizing: "border-box"
 };
 
-const ListItem = ({ id, name }) => {
+const buttonStyle = {
+  cursor: "pointer"
+};
+
+const ListItem = ({ id, name, editing }) => {
+  const dispatch = useDispatch();
   return (
     <div id={id} style={{ ...listItemStyle }}>
-      {name}
+      {editing ? (
+        <input
+          type="text"
+          value={name}
+          onChange={() => console.log("Implement onChange")}
+        />
+      ) : (
+        <div>{name}</div>
+      )}
+
+      <div>
+        <button style={buttonStyle} onClick={() => dispatch(toggleEdit(id))}>
+          {editing ? "Save" : "Edit"}
+        </button>
+        <button style={buttonStyle} onClick={() => dispatch(removeItem(id))}>
+          Remove
+        </button>
+      </div>
     </div>
   );
 };

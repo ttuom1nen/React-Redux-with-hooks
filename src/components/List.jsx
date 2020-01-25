@@ -26,35 +26,20 @@ const List = () => {
       {!isFetching ? (
         <div>
           <div>
-            <button
-              onClick={() =>
-                dispatch({
-                  type: "ADD_ITEM",
-                  payload: {}
-                })
-              }
-            >
-              Add Item
-            </button>
-            <button
-              onClick={() =>
-                dispatch({
-                  type: "REMOVE_ITEM",
-                  payload: {}
-                })
-              }
-            >
-              Remove Item
-            </button>
-          </div>
-          <div>
             {items.map(item => (
-              <ListItem key={item.id} id={item.id} name={item.name} />
+              <ListItem
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                editing={item.editing}
+              />
             ))}
           </div>
         </div>
-      ) : (
+      ) : !didInvalidate ? (
         <b>Loading data...</b>
+      ) : (
+        <b>Error Loading Users!</b>
       )}
     </div>
   );

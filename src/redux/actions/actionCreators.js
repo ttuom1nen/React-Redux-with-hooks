@@ -13,13 +13,6 @@ export const decrement = () => {
   };
 };
 
-export const addItem = id => {
-  return {
-    type: "ADD_ITEM",
-    payload: id
-  };
-};
-
 export const removeItem = id => {
   return {
     type: "REMOVE_ITEM",
@@ -27,47 +20,29 @@ export const removeItem = id => {
   };
 };
 
-export const fetchUsers = () => {
-  return async function(dispatch, getState) {
-    await fetch("https://jsonplaceholder.typicode.com/users")
-      .then(response => response.json())
-      .then(json =>
-        dispatch({
-          type: "SET_USERS",
-          payload: json
-        })
-      );
+export const toggleEdit = id => {
+  return {
+    type: "TOGGLE_EDIT",
+    payload: id
   };
 };
 
-/*
 export const fetchUsers = () => {
-  // Interpreted by the thunk middleware:
-  return function(dispatch, getState) {
-    const { posts } = getState();
-    if (posts[userId]) {
-      // There is cached data! Don't do anything.
-      return;
+  return async function(dispatch) {
+    try {
+      await fetch("https://jsonplaceholder.typicode.com/users")
+        .then(response => response.json())
+        .then(json =>
+          dispatch({
+            type: "SET_USERS",
+            payload: json
+          })
+        );
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "SET_USERS_ERROR"
+      });
     }
-    dispatch({
-      type: "LOAD_POSTS_REQUEST",
-      userId
-    });
-    // Dispatch vanilla actions asynchronously
-    fetch(`http://myapi.com/users/${userId}/posts`).then(
-      response =>
-        dispatch({
-          type: "LOAD_POSTS_SUCCESS",
-          userId,
-          response
-        }),
-      error =>
-        dispatch({
-          type: "LOAD_POSTS_FAILURE",
-          userId,
-          error
-        })
-    );
   };
 };
-*/
