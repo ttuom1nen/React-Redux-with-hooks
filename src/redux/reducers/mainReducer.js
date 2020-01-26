@@ -14,6 +14,8 @@ const mainReducer = (state = initialState, action) => {
       return { ...state, fetch: userItemsReducers(state.fetch, action) };
     case "TOGGLE_EDIT":
       return { ...state, fetch: userItemsReducers(state.fetch, action) };
+    case "SAVE_INPUT":
+      return { ...state, fetch: userItemsReducers(state.fetch, action) };
     default:
       return state;
   }
@@ -39,6 +41,17 @@ function userItemsReducers(state, action) {
       return updateObject(state, {
         items: updateItemInArray(state.items, action.payload, function(item) {
           return updateObject(item, { editing: !item.editing });
+        })
+      });
+    case "SAVE_INPUT":
+      return updateObject(state, {
+        items: updateItemInArray(state.items, action.payload.id, function(
+          item
+        ) {
+          return updateObject(item, {
+            editing: false,
+            name: action.payload.input
+          });
         })
       });
     default:

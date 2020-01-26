@@ -4,6 +4,5 @@ export const initialState = {
     didInvalidate: false,
     items: []
   },
-  counter: 0,
-  dashboard: [null]
+  counter: 0
 };

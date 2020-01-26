@@ -27,6 +27,13 @@ export const toggleEdit = id => {
   };
 };
 
+export const saveInput = (id, input) => {
+  return {
+    type: "SAVE_INPUT",
+    payload: { id: id, input: input }
+  };
+};
+
 export const fetchUsers = () => {
   return async function(dispatch) {
     try {
@@ -39,7 +46,6 @@ export const fetchUsers = () => {
           })
         );
     } catch (error) {
-      console.log(error);
       dispatch({
         type: "SET_USERS_ERROR"
       });
